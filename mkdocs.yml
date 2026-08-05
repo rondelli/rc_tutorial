@@ -1,0 +1,16 @@
+site_name: Tutorial de rc
+
+theme: readthedocs
+
+markdown_extensions:
+  toc:
+    permalink: true
+    separator: "_"
+  admonition: {}
+
+site_author: Hernán Rondelli
+
+copyright: Copyright © 2026 Hernán Rondelli. All rights reserved.
+
+extra:
+  version: v1.0

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" /><meta name="author" content="Hernán Rondelli" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Tutorial de rc</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Tutorial de rc";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> Tutorial de rc
+        </a>
+        <div class="version">
+          v1.0
+        </div><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Tutorial de rc</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#que_es_rc">Qué es rc?</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#comandos_basicos">Comandos básicos</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#listas">Listas</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#el_operador_de_concatenacion">El operador ^ de concatenación</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#concatenacion_basica">Concatenación básica</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#concatenacion_de_listas">Concatenación de listas</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#quoting">Quoting</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#globbing">Globbing</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#cero_o_mas_caracteres">* cero o más caracteres</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#exactamente_un_unico_caracter">? exactamente un único carácter</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#clase_de_caracteres">[...] clase de caracteres</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#a-z_clase_de_caracteres_negada">[~a-z] clase de caracteres negada</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#el_globbing_produce_listas">El globbing produce listas</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pipes">Pipes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#redireccionamiento">Redireccionamiento</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#file_descriptors">File descriptors</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#operadores">Operadores</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sustitucion_de_comandos">Sustitución de comandos</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#aritmetica_con_hoc">Aritmética con hoc</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#uso_interactivo_de_hoc">Uso interactivo de hoc</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#guardar_el_resultado_en_variables">Guardar el resultado en variables</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#usar_variables_de_rc_en_expresiones_en_hoc">Usar variables de rc en expresiones en hoc</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#operaciones_en_hoc">Operaciones en hoc</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#control_de_flujo">Control de flujo</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#if">if</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#while">while</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#for">for</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#switch">switch</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#el_operador_match">El operador ~ match</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#funciones">Funciones</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#scripts">Scripts</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#argumentos_en_scripts">Argumentos en scripts</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#la_lista_completa_de_argumentos">$* la lista completa de argumentos</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#1_2_3_acceso_posicional">$1, $2, $3, ... acceso posicional</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0_nombre_del_script">$0 nombre del script</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cantidad_de_argumentos">$#* cantidad de argumentos</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#validar_argumentos">Validar argumentos</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#iterar_sobre_los_argumentos">Iterar sobre los argumentos</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#variables_especiales">Variables especiales</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tabla_comparativa_rc_vs_bash">Tabla comparativa: rc vs bash</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#herramientas_del_ecosistema_historial_sin_historial">Herramientas del ecosistema: historial sin historial</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#wintext_muestra_el_texto_de_la_ventana_actual">wintext muestra el texto de la ventana actual</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#buscar_en_el_historial">" buscar en el historial</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#buscar_y_ejecutar">"" buscar y ejecutar</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#el_sistema_completo">El sistema completo</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">Tutorial de rc</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Tutorial de rc</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="tutorial_de_rc_el_shell_de_plan_9">Tutorial de <code>rc</code> — El shell de Plan 9<a class="headerlink" href="#tutorial_de_rc_el_shell_de_plan_9" title="Permanent link">&para;</a></h1>
+<p>Copyright © 2026 Hernán Rondelli. All rights reserved.</p>
+<h2 id="que_es_rc">Qué es <code>rc</code>?<a class="headerlink" href="#que_es_rc" title="Permanent link">&para;</a></h2>
+<p><code>rc</code> es un shell creado por Tom Duff para el sistema operativo <em>Plan 9 from Bell Labs</em>—diseñado por los creadores de Unix. Es un shell más simple, consistente, y elegante que <code>sh</code>. <code>rc</code> elimina inconsistencias históricas acumuladas en los shells POSIX (e.g., <code>sh</code>, <code>ksh</code>, <code>bash</code>, <code>zsh</code>).</p>
+<p>En <code>rc</code> hay una sola regla principal de la que se deriva casi todo:</p>
+<div class="admonition note">
+<p class="admonition-title">Atención</p>
+<p>En <code>rc</code> <strong>todo</strong> es una lista: los comandos reciben listas y producen listas.</p>
+</div>
+<hr />
+<h2 id="comandos_basicos">Comandos básicos<a class="headerlink" href="#comandos_basicos" title="Permanent link">&para;</a></h2>
+<p>Los comandos y programas clásicos de Unix funcionan igual que en cualquier otro shell:</p>
+<pre><code class="language-plain">% echo 'Aguante Boca'
+% ls -l /etc
+% cat /etc/fstab
+</code></pre>
+<hr />
+<h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">&para;</a></h2>
+<p>El símbolo <code>$</code> se usa cuando se <em>lee</em> el valor, en la asignación no usa <code>$</code>:</p>
+<pre><code class="language-plain">% nombre = 'Diego Armando Maradona'  # se crea la variable, y se le asigna un valor
+% echo $nombre                       # → Diego Armando Maradona
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Observación</p>
+<p><code>rc</code> ignora todo lo que se escriba después de un símbolo <code>#</code> hasta el fin de esa línea.</p>
+</div>
+<hr />
+<h2 id="listas">Listas<a class="headerlink" href="#listas" title="Permanent link">&para;</a></h2>
+<p>La lista es la estructura de datos principal en <code>rc</code>. Los elementos de la lista se escriben separados por un espacio:</p>
+<pre><code class="language-plain">% colores = (azul amarillo verde negro)
+% echo $colores
+azul amarillo verde negro
+% echo $colores(1)        # se empieza a contar desde el 1
+azul
+% echo $colores(1 2 1)
+azul amarillo azul
+% echo $#colores          # longitud de la lista
+4
+% arquero = 'Juan Carlos Olave'
+% echo $arquero
+Juan Carlos Olave
+% echo $#arquero          # longitud de la lista
+1
+</code></pre>
+<p>En el último ejemplo, podemos ver que en <code>rc</code> <strong>todo</strong> es una lista, i.e. la variable <code>arquero</code> es una lista que contiene un solo string.</p>
+<hr />
+<h2 id="el_operador_de_concatenacion">El operador <code>^</code> de concatenación<a class="headerlink" href="#el_operador_de_concatenacion" title="Permanent link">&para;</a></h2>
+<p>En <code>rc</code> la concatenación es explícita: se usa el operador <code>^</code>. Esto elimina toda una categoría de errores de <em>quoting</em> que existen en <code>sh</code>, donde la concatenación es implícita y depende del contexto.</p>
+<h3 id="concatenacion_basica">Concatenación básica<a class="headerlink" href="#concatenacion_basica" title="Permanent link">&para;</a></h3>
+<pre><code class="language-plain">% echo 'Aguante'^'Belgrano'
+AguanteBelgrano
+% echo 'Aguante'^' Belgrano'
+Aguante Belgrano
+% nombre = 'Juan Carlos Olave'
+% echo 'Sr. ' ^ $nombre
+Sr. Juan Carlos Olave
+
+# Dos variables
+% extension = 'txt'
+% nombre_del_archivo = 'notas'
+% echo $nombre_del_archivo^'.'^$extension
+notas.txt
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Por qué <code>^</code> es necesario?</p>
+<p>Sin el operador <code>^</code>, dos tokens separados por espacios son argumentos distintos para el comando. El operador <code>^</code> indica explícitamente "esto es una sola cosa". Por ejemplo:</p>
+</div>
+<pre><code class="language-plain">% nombre_del_archivo = 'notas'
+% echo $nombre_del_archivo '.txt'
+notas .txt                           # → dos argumentos: 'notas' y '.txt'
+% echo $nombre_del_archivo ^ '.txt'
+notas.txt                            # → un argumento: 'notas.txt'
+% echo $nombre_del_archivo'.txt'
+notas.txt                            # → un argumento: 'notas.txt'
+</code></pre>
+<h3 id="concatenacion_de_listas">Concatenación de listas<a class="headerlink" href="#concatenacion_de_listas" title="Permanent link">&para;</a></h3>
+<p>Cuando uno de los operandos es una lista, y el otro es un elemento simple, <code>^</code> distribuye la concatenación sobre cada elemento de la lista:</p>
+<pre><code class="language-rc">% archivos = (main funciones data)
+% echo $archivos ^ '.c'
+main.c funciones.c data.c
+
+% echo 'test_' ^ $archivos ^ '.c'
+test_main.c test_funciones.c test_data.c
+</code></pre>
+<p>Esto es útil para generar nombres de archivos, flags, ó cualquier conjunto de strings que comparten un prefijo, ó sufijo.</p>
+<p>Cuando ambos operandos son listas de la misma longitud, la concatenación es <em>elemento a elemento</em>:</p>
+<pre><code class="language-rc">% prefijos = (src/ include/ test/)
+% sufijos = (main.c config.h run.c)
+% echo $prefijos ^ $sufijos
+src/main.c include/config.h test/run.c
+</code></pre>
+<p>Si las listas tienen distinta longitud, <code>rc</code> produce un error.</p>
+<hr />
+<h2 id="quoting">Quoting<a class="headerlink" href="#quoting" title="Permanent link">&para;</a></h2>
+<p>En <code>rc</code> las comillas simples se usan para literales, sin ninguna expansión.</p>
+<pre><code class="language-rc"># Comillas simples: literal, sin ninguna expansión
+% echo 'El valor es $nombre'    # → El valor es $nombre
+
+
+Las comillas dobles unen los elementos de una lista en un único string separado con espacios:
+% num1 = (uno dos tres)
+% num2 = $&quot;num1         # $&quot;var: une los elementos de la lista en un único string
+% echo $#num1
+3
+% echo $#num2
+1
+% echo $num1
+uno dos tres
+% echo $num2
+uno dos tres
+</code></pre>
+<p>No hay comillas dobles para expansión como en <code>bash</code>. La expansión siempre ocurre con <code>$</code>, sin importar el contexto.</p>
+<hr />
+<h2 id="globbing">Globbing<a class="headerlink" href="#globbing" title="Permanent link">&para;</a></h2>
+<p>El <em>globbing</em> es la expansión de nombres de archivo que realiza el shell antes de ejecutar un comando. Los patrones de glob son más simples que las expresiones regulares.</p>
+<div class="admonition warning">
+<p class="admonition-title">Cuidado</p>
+<p>Los patrones de glob, y las expresiones regulares, <strong>no</strong> son la misma cosa, aunque se parecen bastante—y en concepto, son la misma idea.</p>
+</div>
+<h3 id="cero_o_mas_caracteres"><code>*</code> cero o más caracteres<a class="headerlink" href="#cero_o_mas_caracteres" title="Permanent link">&para;</a></h3>
+<p>Coincide con cualquier secuencia de caracteres, excepto <code>/</code> dado que es el separador de directorios:</p>
+<pre><code class="language-plain">ls *.c               # todos los archivos .c
+ls notas-*.txt       # archivos que empiezan con 'notas-' y que terminen con `.txt`
+ls src/*.h           # archivos .h dentro de src/
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Observación</p>
+<p><code>*</code> no es recursivo: no entra en subdirectorios.</p>
+</div>
+<h3 id="exactamente_un_unico_caracter"><code>?</code> exactamente un único carácter<a class="headerlink" href="#exactamente_un_unico_caracter" title="Permanent link">&para;</a></h3>
+<p>El operador <code>?</code> coincide con exactamente <strong>un</strong> carácter, excepto <code>/</code>.</p>
+<pre><code class="language-rc">ls archivo?.c        # archivo1.c, archivoa.c, archivo_.c,...
+ls ???.txt           # exactamente 3 caracteres antes de .txt
+</code></pre>
+<h3 id="clase_de_caracteres"><code>[...]</code> clase de caracteres<a class="headerlink" href="#clase_de_caracteres" title="Permanent link">&para;</a></h3>
+<p>Coincide con exactamente un carácter del conjunto:</p>
+<pre><code class="language-rc">ls archivo[123].c       # archivo1.c, archivo2.c o archivo3.c
+ls [Aa]rchivo.txt       # Archivo.txt, archivo.txt
+ls letra_[a-z].txt      # letra_a.txt, letra_b.txt, ..., letra_z.txt
+ls test_[0-9].sh        # test_0.sh, test_1.sh, ..., test_9.sh
+ls [a-zA-Z]*.c          # archivos .c que empiezan con una letra
+</code></pre>
+<p>Se pueden combinar rangos y caracteres sueltos dentro de <code>[...]</code>:</p>
+<pre><code class="language-rc">ls archivo[0-9a-f].txt  # un dígito o una letra hexadecimal
+</code></pre>
+<h3 id="a-z_clase_de_caracteres_negada"><code>[~a-z]</code> clase de caracteres negada<a class="headerlink" href="#a-z_clase_de_caracteres_negada" title="Permanent link">&para;</a></h3>
+<p>En <code>rc</code>, la negación dentro de <code>[...]</code> se indica con <code>~</code> (ojo, no es con <code>!</code> ni <code>^</code> como en otros shells):</p>
+<pre><code class="language-rc">ls archivo[~0-9].c      # archivoa.c, archivob.c... pero NO archivo1.c
+ls [~aeiou]*.txt        # .txt que NO empiezan con vocal
+ls [~.]*.c              # .c que no empiezan con punto
+ls [~a-zA-Z]*.sh        # .sh que no empiezan con una letra
+</code></pre>
+<h3 id="el_globbing_produce_listas">El globbing produce listas<a class="headerlink" href="#el_globbing_produce_listas" title="Permanent link">&para;</a></h3>
+<p>La expansión de un patrón produce una lista, consistente con el modelo central de rc:</p>
+<pre><code class="language-rc">source = (*.c)
+wc -l $source        # cantidad de líneas en cada archivo .c encontrado
+
+for(f in *.txt) {
+    echo 'Procesando el archivo: '^$f
+}
+</code></pre>
+<hr />
+<h2 id="pipes">Pipes<a class="headerlink" href="#pipes" title="Permanent link">&para;</a></h2>
+<p>Un <em>pipe</em> en Unix es un mecanismo de <em>Inter-Process Communication (IPC)</em>, y es uno de los conceptos más importantes, y poderosos para la composición de operaciones de distintos programas.</p>
+<p>Un <em>pipe</em> es un <em>canal unidireccional de comunicación entre procesos</em> que permite que la salida estándar de un programa se conecte directamente a la entrada estándar de otro programa, sin necesidad de archivos intermedios.</p>
+<pre><code class="language-rc">% ls | sort
+% cat compras_del_super.txt | grep detergente
+% ls | grep '.txt' | wc -l
+</code></pre>
+<hr />
+<h2 id="redireccionamiento">Redireccionamiento<a class="headerlink" href="#redireccionamiento" title="Permanent link">&para;</a></h2>
+<p>El redireccionamiento permite cambiar la salida ó la entrada de un programa:</p>
+<pre><code class="language-plain">echo 'El Diego' &gt; jugadores.txt     # crea ó sobreescribe el archivo de salida 'jugadores.txt'
+echo 'Messi' &gt;&gt; jugadores.txt       # crea ó le agrega al archivo de salida 'jugadores.txt'
+cat &lt; entrada.txt
+</code></pre>
+<h3 id="file_descriptors">File descriptors<a class="headerlink" href="#file_descriptors" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>0 - stdin</strong>: entrada estándar, el teclado.</li>
+<li><strong>1 - stdout</strong>: salida estándar, el display.</li>
+<li><strong>2 - stderr</strong>: salida de error, el display.</li>
+</ul>
+<h3 id="operadores">Operadores<a class="headerlink" href="#operadores" title="Permanent link">&para;</a></h3>
+<p>A continuación se muestra la sintaxis de los operadores.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Operador</th>
+<th>Acción</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>&gt;</code></td>
+<td>Redirige stdout (sobreescribe)</td>
+<td><code>ls &gt; archivos.txt</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&gt;[1]</code></td>
+<td>Idem anterior</td>
+<td><code>ls &gt;[1] archivos.txt</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&gt;&gt;</code></td>
+<td>Redirige stdout (agrega al final)</td>
+<td><code>echo 'hello' &gt;&gt; log.txt</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&gt;&gt;[1]</code></td>
+<td>Idem anterior</td>
+<td><code>echo 'hello' &gt;&gt;[1] log.txt</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&lt;</code></td>
+<td>Redirige stdin</td>
+<td><code>sort &lt; lista.txt</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&lt;[0]</code></td>
+<td>Idem anterior</td>
+<td><code>sort &lt;[0] lista.txt</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&gt;[2]</code></td>
+<td>Redirige stderr</td>
+<td><code>comando &gt;[2] errores.log</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&gt;[2=1]</code></td>
+<td>Redirige stderr a la salida de stdout</td>
+<td><code>comando &gt; salida.txt &gt;[2=1]</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>&gt;[2=]</code></td>
+<td>Redirige stderr a null</td>
+<td><code>comando &gt;[2=]</code></td>
+</tr>
+</tbody>
+</table>
+<p>Ejemplo combinando pipes con redireccionamiento:</p>
+<pre><code class="language-plain">% cat archivo.log | grep error &gt;errores_encontrados.txt &gt;[2]/dev/null
+</code></pre>
+<hr />
+<h2 id="sustitucion_de_comandos">Sustitución de comandos<a class="headerlink" href="#sustitucion_de_comandos" title="Permanent link">&para;</a></h2>
+<p>En <code>sh</code> se usa <code>`comando`</code>, en <code>rc</code> se usa <code>`{comando}</code>:</p>
+<pre><code class="language-rc">% fecha = `{date +%F} # (suponiendo Unix date)
+% echo $fecha
+2011-06-26
+% archivos = `{ls /etc/}
+% echo $#archivos       # cantidad de archivos en /etc
+</code></pre>
+<p>El resultado es una lista, dividida por los caracteres en <code>$ifs</code> (by default: espacio, tab, y newline).</p>
+<hr />
+<h2 id="aritmetica_con_hoc">Aritmética con <code>hoc</code><a class="headerlink" href="#aritmetica_con_hoc" title="Permanent link">&para;</a></h2>
+<p><code>rc</code> no tiene operadores aritméticos incorporados. Para hacer cálculos numéricos, en <code>rc</code> hay que usar un programa externo llamando <code>hoc</code> <em>(High Order Calculator)</em>, que es la calculadora de Plan 9, introducida por Kernighan y Pike en <em>The Unix Programming Environment</em> (1984).</p>
+<h3 id="uso_interactivo_de_hoc">Uso interactivo de hoc<a class="headerlink" href="#uso_interactivo_de_hoc" title="Permanent link">&para;</a></h3>
+<p><code>hoc</code> es una calculadora simple de línea de comandos con soporte para floats:</p>
+<pre><code class="language-plain">% hoc
+3 * 5
+15
+27 / 3
+9
+28 / 3
+9.333333333333334
+sqrt(16)
+4
+2 ^ 10
+1024
+PI
+3.141592653589793
+E
+2.718281828459045
+</code></pre>
+<h3 id="guardar_el_resultado_en_variables">Guardar el resultado en variables<a class="headerlink" href="#guardar_el_resultado_en_variables" title="Permanent link">&para;</a></h3>
+<p>Se puede combinar <code>hoc</code> con sustitución de comandos para guardar el resultado en una variable en <code>rc</code>:</p>
+<pre><code class="language-rc">% x = `{hoc -e '3 * 5'}
+% echo $x
+15
+% raíz = `{hoc -e 'sqrt(4)'}
+% echo $raíz
+2
+</code></pre>
+<h3 id="usar_variables_de_rc_en_expresiones_en_hoc">Usar variables de <code>rc</code> en expresiones en <code>hoc</code><a class="headerlink" href="#usar_variables_de_rc_en_expresiones_en_hoc" title="Permanent link">&para;</a></h3>
+<p>Se construye la expresión como string usando <code>^</code>, y se la pasa a hoc:</p>
+<pre><code class="language-rc">% radio = 5
+% area = `{hoc -e $radio ^ '^2 * PI'}
+% echo $area
+78.53981633974483
+</code></pre>
+<p>Esta línea tiene un detalle importante: aparecen dos <code>^</code> con <strong>significados distintos</strong>.</p>
+<ul>
+<li>El primer <code>^</code> es el <em>operador de concatenación</em> en <code>rc</code>, y concatena <code>$radio</code> (que vale <code>5</code>) con el string <code>'^2 * PI'</code>, produciendo la expresión <code>5^2 * PI</code>.</li>
+<li>Dentro de esa expresión, el <code>^</code> que queda es el <em>operador de exponenciación</em> en hoc.</li>
+</ul>
+<p>El string <code>5^2 * PI</code> se pasa a <code>hoc</code>, que lo evalúa como 25 × π.</p>
+<p>Otro ejemplo con dos variables:</p>
+<pre><code class="language-rc">% a = 28
+% b = 3
+% cociente = `{hoc -e $a ^ '/' ^ $b}
+% echo $cociente
+9.333333333333334
+</code></pre>
+<h3 id="operaciones_en_hoc">Operaciones en <code>hoc</code><a class="headerlink" href="#operaciones_en_hoc" title="Permanent link">&para;</a></h3>
+<p>A continuación se muestra la sintaxis de los operadores.</p>
+<table>
+<thead>
+<tr>
+<th>Operación</th>
+<th>Sintaxis</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>suma</td>
+<td><code>a + b</code></td>
+<td><code>2 + 3</code> → <code>5</code></td>
+</tr>
+<tr>
+<td>resta</td>
+<td><code>a - b</code></td>
+<td><code>10 - 4</code> → <code>6</code></td>
+</tr>
+<tr>
+<td>multiplicación</td>
+<td><code>a * b</code></td>
+<td><code>6 * 7</code> → <code>42</code></td>
+</tr>
+<tr>
+<td>división</td>
+<td><code>a / b</code></td>
+<td><code>22 / 7</code> → <code>3.1428...</code></td>
+</tr>
+<tr>
+<td>módulo</td>
+<td><code>a % b</code></td>
+<td><code>17 % 5</code> → <code>2</code></td>
+</tr>
+<tr>
+<td>exponenciación</td>
+<td><code>a ^ b</code></td>
+<td><code>2^10</code> → <code>1024</code></td>
+</tr>
+<tr>
+<td>raíz cuadrada</td>
+<td><code>sqrt(x)</code></td>
+<td><code>sqrt(2)</code> → <code>1.4142...</code></td>
+</tr>
+<tr>
+<td>valor absoluto</td>
+<td><code>abs(x)</code></td>
+<td><code>abs(-5)</code> → <code>5</code></td>
+</tr>
+<tr>
+<td>parte entera</td>
+<td><code>int(x)</code></td>
+<td><code>int(3.9)</code> → <code>3</code></td>
+</tr>
+<tr>
+<td>logaritmo</td>
+<td><code>log(x)</code></td>
+<td><code>log(E)</code> → <code>1</code></td>
+</tr>
+<tr>
+<td>exponencial</td>
+<td><code>exp(x)</code></td>
+<td><code>exp(1)</code> → <code>2.7182...</code></td>
+</tr>
+<tr>
+<td>seno</td>
+<td><code>sin(x)</code></td>
+<td>(en radianes)</td>
+</tr>
+<tr>
+<td>coseno</td>
+<td><code>cos(x)</code></td>
+<td>(en radianes)</td>
+</tr>
+<tr>
+<td>tangente</td>
+<td><code>tan(x)</code></td>
+<td>(en radianes)</td>
+</tr>
+<tr>
+<td>arcotangente</td>
+<td><code>atan(x)</code></td>
+<td>(en radianes)</td>
+</tr>
+<tr>
+<td>número π</td>
+<td><code>PI</code></td>
+<td>3.141592653589793</td>
+</tr>
+<tr>
+<td>número <em>e</em></td>
+<td><code>E</code></td>
+<td>2.718281828459045</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="control_de_flujo">Control de flujo<a class="headerlink" href="#control_de_flujo" title="Permanent link">&para;</a></h2>
+<h3 id="if">if<a class="headerlink" href="#if" title="Permanent link">&para;</a></h3>
+<p>La condición es un comando. Si devuelve código de error <code>0</code>, i.e comando exitoso, se ejecuta el bloque.</p>
+<pre><code class="language-rc">if(test -f /etc/passwd) {
+    echo 'El archivo existe.'
+}
+
+if(test -f /etc/passwd) {
+    echo 'El archivo existe.'
+} if not {
+    echo 'El archivo **no** existe.'
+}
+</code></pre>
+<h3 id="while">while<a class="headerlink" href="#while" title="Permanent link">&para;</a></h3>
+<pre><code class="language-rc">i = 1
+while(test $i -le 10) {
+    echo $i
+    i = `{hoc -e $i' + 1'}
+}
+</code></pre>
+<h3 id="for">for<a class="headerlink" href="#for" title="Permanent link">&para;</a></h3>
+<pre><code class="language-rc">for(c in azul amarillo azul) {
+    echo $c
+}
+
+# Con una variable lista:
+colores = (azul amarillo azul)
+for(c in $colores) {
+    echo $c
+}
+
+# Sobre archivos:
+for(f in `{ls *.txt}) {
+    echo 'Procesando el archivo: '^$f
+}
+
+# un &quot;for range&quot; de 1 a 10
+for(i in `{seq 10}) {
+    echo $i
+}
+</code></pre>
+<h3 id="switch">switch<a class="headerlink" href="#switch" title="Permanent link">&para;</a></h3>
+<pre><code class="language-rc">input = 'hola'
+switch($input) {
+case hola
+    echo 'Dijiste hola'
+case chau
+    echo 'Dijiste chau'
+case *
+    echo 'No sé qué dijiste'
+}
+</code></pre>
+<hr />
+<h2 id="el_operador_match">El operador <code>~</code> match<a class="headerlink" href="#el_operador_match" title="Permanent link">&para;</a></h2>
+<p><code>rc</code> incluye el operador <code>~</code> para comparar strings contra patrones de globbing:</p>
+<pre><code class="language-rc"># Comparación exacta
+if(~ $nombre Juan) {
+    echo 'El nombre es Juan.'
+}
+
+# Con patrón de globbing
+if(~ $archivo *.txt) {
+    echo 'El archivo es un archivo de texto.'
+}
+
+# Múltiples patrones (cualquiera puede coincidir)
+if(~ $jugador Cavenaghi Ortega Gallardo 'Ramón Díaz') {
+    echo 'Es un jugador de la B.'
+}
+</code></pre>
+<hr />
+<h2 id="funciones">Funciones<a class="headerlink" href="#funciones" title="Permanent link">&para;</a></h2>
+<p>Las funciones se definen con <code>fn</code> y el nombre de la función, y los parámetros de la función se especifican por posición, en este caso, la función recibe un único parámetro <code>$1</code>:</p>
+<pre><code class="language-rc">     1  fn say_hello {
+     2      echo 'Hello, ' ^ $1
+     3  }
+</code></pre>
+<p>Los argumentos a la función se pasan posicionalmente, en este caso, el primer argumento es <code>$1</code>:</p>
+<pre><code class="language-plain">% say_hello 'Diego Armando Maradona'
+Hello, Diego Armando Maradona
+</code></pre>
+<p>La lista de todos los argumentos se especifican con la variable <code>$*</code>. Además, se pueden especificar por posición, donde el primer argumento es <code>$1</code>, el segundo argumento es <code>$2</code>, etc:</p>
+<pre><code class="language-rc">     1  fn mostrar_argumentos {
+     2      echo 'La cantidad de argumentos de la función es ' ^ $#* ^ '.'
+     3      echo 'Los argumentos son:'
+     4      for(arg in $*) {
+     5          echo '-' $arg
+     6      }
+     7  }
+     8
+     9  mostrar_argumentos azul amarillo azul
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Observación</p>
+<p>Si bien se pueden definir las funciones directamente en el prompt, es más habitual y conveniente, escribir las funciones en un archivo y luego ejecutar ese archivo. Es el tema que se trata a continuación.</p>
+</div>
+<hr />
+<h2 id="scripts">Scripts<a class="headerlink" href="#scripts" title="Permanent link">&para;</a></h2>
+<p>La primera línea de un script <code>rc</code> es el <em>shebang</em>:</p>
+<pre><code class="language-rc">#!/bin/rc
+</code></pre>
+<p>Ejemplo completo:</p>
+<pre><code class="language-rc">     1  #!/bin/rc
+     2
+     3  # Verifica que se pasó un argumento
+     4  if(~ $#* 0) {
+     5      echo 'Uso: '$0' &lt;directorio&gt;'
+     6      exit 1
+     7  }
+     8
+     9  dir = $1
+    10
+    11  if(! test -d $dir) {
+    12      echo $dir 'no es un directorio'
+    13      exit 1
+    14  }
+    15
+    16  echo 'Archivos en '$dir':'
+    17  for(f in `{ls $dir}) {
+    18      echo '  ' $f
+    19  }
+</code></pre>
+<hr />
+<h2 id="argumentos_en_scripts">Argumentos en scripts<a class="headerlink" href="#argumentos_en_scripts" title="Permanent link">&para;</a></h2>
+<p>Cuando se invoca un script así:</p>
+<pre><code>./script arg1 arg2 arg3
+</code></pre>
+<p>los argumentos quedan disponibles dentro del script a través de varias variables especiales.</p>
+<h3 id="la_lista_completa_de_argumentos"><code>$*</code> la lista completa de argumentos<a class="headerlink" href="#la_lista_completa_de_argumentos" title="Permanent link">&para;</a></h3>
+<p>En <code>rc</code>, <code>$*</code> es una lista con todos los argumentos.</p>
+<pre><code class="language-rc">     1  #!/bin/rc
+     2
+     3  echo 'Argumentos recibidos:' $*
+     4  echo 'Cantidad de argumentos:' $#*
+</code></pre>
+<p>Invocado como <code>./script uno dos tres</code>:</p>
+<pre><code class="language-plain">Argumentos recibidos: uno dos tres
+Cantidad de argumentos: 3
+</code></pre>
+<h3 id="1_2_3_acceso_posicional"><code>$1</code>, <code>$2</code>, <code>$3</code>, ... acceso posicional<a class="headerlink" href="#1_2_3_acceso_posicional" title="Permanent link">&para;</a></h3>
+<p>Son equivalentes a <code>$*(1)</code>, <code>$*(2)</code>, <code>$*(3)</code>: índices sobre la lista <code>$*</code>, con base 1.</p>
+<pre><code class="language-rc">     1  #!/bin/rc
+     2
+     3  echo 'Primero:' $1
+     4  echo 'Segundo:' $2
+     5  echo 'Tercero:' $3
+</code></pre>
+<p>Si se intenta acceder a un índice que no existe (por ejemplo <code>$3</code> cuando solo se pasaron dos argumentos), <code>rc</code> devuelve una lista vacía sin producir un error.</p>
+<h3 id="0_nombre_del_script"><code>$0</code> nombre del script<a class="headerlink" href="#0_nombre_del_script" title="Permanent link">&para;</a></h3>
+<p><code>$0</code> contiene el nombre con el que fue invocado el script. Es útil para mensajes de uso:</p>
+<pre><code class="language-rc">     1  #!/bin/rc
+     2
+     3  echo 'Este script se llama:' $0
+</code></pre>
+<pre><code>Este script se llama: ./script
+</code></pre>
+<h3 id="cantidad_de_argumentos"><code>$#*</code> cantidad de argumentos<a class="headerlink" href="#cantidad_de_argumentos" title="Permanent link">&para;</a></h3>
+<p>El operador <code>$#</code> seguido de un nombre de lista devuelve su longitud. Para los argumentos del script, la lista se llama <code>*</code>, así que la sintaxis es <code>$#*</code>:</p>
+<pre><code class="language-rc">echo $#*       # cantidad de argumentos
+</code></pre>
+<h3 id="validar_argumentos">Validar argumentos<a class="headerlink" href="#validar_argumentos" title="Permanent link">&para;</a></h3>
+<p>El patrón más común es verificar que se recibió la cantidad correcta de argumentos antes de hacer cualquier otra cosa:</p>
+<pre><code class="language-rc">     1  #!/bin/rc
+     2
+     3  # Verificar que se pasó exactamente un argumento
+     4  if(~ $#* 0) {
+     5      echo 'Uso: '$0' &lt;nombre&gt;'
+     6      exit 1
+     7  }
+     8
+     9  echo 'Hola,' $1
+</code></pre>
+<p>Para verificar un mínimo de argumentos:</p>
+<pre><code class="language-rc">if(test $#* -lt 2) {
+    echo 'Uso: '$0' &lt;origen&gt; &lt;destino&gt;'
+    exit 1
+}
+</code></pre>
+<h3 id="iterar_sobre_los_argumentos">Iterar sobre los argumentos<a class="headerlink" href="#iterar_sobre_los_argumentos" title="Permanent link">&para;</a></h3>
+<p>Como <code>$*</code> es una lista, el <code>for</code> funciona directamente:</p>
+<pre><code class="language-rc">#!/bin/rc
+
+for(arg in $*) {
+    echo 'procesando:' $arg
+}
+</code></pre>
+<p>Invocado como <code>./script boca belgrano olave</code>:</p>
+<pre><code class="language-plain">procesando: boca
+procesando: belgrano
+procesando: olave
+</code></pre>
+<hr />
+<h2 id="variables_especiales">Variables especiales<a class="headerlink" href="#variables_especiales" title="Permanent link">&para;</a></h2>
+<p>En la siguiente tabla, se muestran las variables especiales de <code>rc</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$*</code></td>
+<td>Todos los argumentos de la función, ó del script</td>
+</tr>
+<tr>
+<td><code>$#*</code></td>
+<td>Cantidad de argumentos</td>
+</tr>
+<tr>
+<td><code>$1</code>, <code>$2</code>...</td>
+<td>Argumentos posicionales</td>
+</tr>
+<tr>
+<td><code>$status</code></td>
+<td>Código de salida del último comando (equivale a <code>$?</code>)</td>
+</tr>
+<tr>
+<td><code>$pid</code></td>
+<td>PID del proceso <code>rc</code> actual</td>
+</tr>
+<tr>
+<td><code>$home</code></td>
+<td>Home directory (en <code>sh</code> es <code>$HOME</code>)</td>
+</tr>
+<tr>
+<td><code>$path</code></td>
+<td>Lista de directorios donde se encuentran los binarios</td>
+</tr>
+<tr>
+<td><code>$ifs</code></td>
+<td>Separadores para sustitución de comandos</td>
+</tr>
+</tbody>
+</table>
+<p>Ejemplos:</p>
+<pre><code class="language-rc">% path = ($home/bin /usr/local/bin /usr/bin /bin)
+%
+% # Agregar un directorio al frente:
+% path = ($home/mis_scripts $path)
+</code></pre>
+<hr />
+<h2 id="tabla_comparativa_rc_vs_bash">Tabla comparativa: <code>rc</code> vs <code>bash</code><a class="headerlink" href="#tabla_comparativa_rc_vs_bash" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concepto</th>
+<th>bash</th>
+<th>rc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Asignación</td>
+<td><code>x="hola"</code></td>
+<td><code>x = 'hola'</code></td>
+</tr>
+<tr>
+<td>Lectura</td>
+<td><code>$x</code> o <code>"$x"</code></td>
+<td><code>$x</code></td>
+</tr>
+<tr>
+<td>Lista / array</td>
+<td><code>a=(a b c)</code></td>
+<td><code>a = (a b c)</code></td>
+</tr>
+<tr>
+<td>Indexar</td>
+<td><code>${a[0]}</code></td>
+<td><code>$a(1)</code></td>
+</tr>
+<tr>
+<td>Largo de lista</td>
+<td><code>${#a[@]}</code></td>
+<td><code>$#a</code></td>
+</tr>
+<tr>
+<td>Sustitución de comando</td>
+<td><code>`cmd`</code></td>
+<td><code>`{cmd}</code></td>
+</tr>
+<tr>
+<td>Código de error del comando</td>
+<td><code>$?</code></td>
+<td><code>$status</code></td>
+</tr>
+<tr>
+<td>Definir función</td>
+<td><code>f() { ... }</code></td>
+<td><code>fn f { ... }</code></td>
+</tr>
+<tr>
+<td>if</td>
+<td><code>if [...]; then ... fi</code></td>
+<td><code>if(cmd) { ... }</code></td>
+</tr>
+<tr>
+<td>PATH</td>
+<td><code>PATH="$HOME/bin:$PATH"</code></td>
+<td><code>path = ($home/bin $path)</code></td>
+</tr>
+<tr>
+<td>Comillas para expansión</td>
+<td><code>"$var"</code> (obligatorio)</td>
+<td><code>$var</code> (siempre seguro)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="herramientas_del_ecosistema_historial_sin_historial">Herramientas del ecosistema: historial sin historial<a class="headerlink" href="#herramientas_del_ecosistema_historial_sin_historial" title="Permanent link">&para;</a></h2>
+<p><code>rc</code> no tiene historial de comandos como otros shells. En <code>rc</code>, no existe el comando <code>history</code>, ni <code>Ctrl-P</code>, ni <code>~/.rc_history</code>. Esto es una decisión de diseño. En Plan 9, el historial simplemente <em>es</em> el texto visible en la ventana de la terminal. <em>Lo que ya está en pantalla no necesita guardarse aparte.</em></p>
+<p>Lo que sigue es un conjunto de tres scripts que implementan búsqueda y re-ejecución de comandos componiendo herramientas pequeñas. Son un ejemplo concreto de la filosofía del ecosistema: en lugar de agrandar el shell, se construye con lo que ya existe.</p>
+<hr />
+<h3 id="wintext_muestra_el_texto_de_la_ventana_actual"><code>wintext</code> muestra el texto de la ventana actual<a class="headerlink" href="#wintext_muestra_el_texto_de_la_ventana_actual" title="Permanent link">&para;</a></h3>
+<p><code>wintext</code> obtiene el contenido de la ventana activa. Soporta tres entornos: Acme, 9term y tmux.</p>
+<pre><code class="language-rc">     1  #!/usr/local/plan9/bin/rc
+     2  if(~ $winid [0-9]*) {
+     3      9p read acme/$winid/body
+     4      exit 0
+     5  }
+     6  if(~ $text9term 'unix!'*) {
+     7      dial -e $text9term &lt; /dev/null
+     8      exit 0
+     9  }
+    10  if(~ $TMUX ?*) {
+    11      tmux capture-pane -p
+    12      exit 0
+    13  }
+    14  echo 'no running window found' &gt;[2=1]
+    15  exit 1
+</code></pre>
+<p>Cada caso usa una variable de entorno que el entorno correspondiente setea automáticamente:</p>
+<ul>
+<li>
+<p><strong><code>$winid</code></strong>: Acme lo define en cada ventana <code>win</code> con el ID numérico del buffer. <code>9p read acme/$winid/body</code> lee el contenido de ese buffer a través del servidor 9P. El patrón <code>[0-9]*</code> verifica que la variable esté definida y contenga un número.</p>
+</li>
+<li>
+<p><strong><code>$text9term</code></strong>: <code>9term</code> (el emulador de terminal de plan9port) lo define con la dirección de red del terminal, siempre con el prefijo <code>unix!</code> (notación de Plan 9 para sockets Unix). <code>dial -e</code> conecta a esa dirección y lee su contenido.</p>
+</li>
+<li><strong><code>$TMUX</code></strong>: tmux lo define cuando se está dentro de una sesión. El patrón <code>?*</code> verifica que no esté vacía. <code>tmux capture-pane -p</code> imprime el contenido visible del pane actual.</li>
+</ul>
+<p>El fallback usa <code>&gt;[2=1]</code> — redirige stdout (1) hacia stderr (2), lo inverso del <code>&gt;[2=1]</code> que redirige stderr hacia stdout. El script termina con código 1.</p>
+<hr />
+<h3 id="buscar_en_el_historial"><code>"</code> buscar en el historial<a class="headerlink" href="#buscar_en_el_historial" title="Permanent link">&para;</a></h3>
+<p>El nombre del script es literalmente el carácter <code>"</code>. En <code>rc</code>, casi cualquier string puede ser un nombre de ejecutable.</p>
+<pre><code class="language-rc">     1  #!/usr/local/plan9/bin/rc
+     2  . 9.rc
+     3  PROMPT='[^  ]*[%;$#][   ]+'
+     4  fn cmds {
+     5      wintext | sed -n 's/^'$PROMPT'([^&quot;])/   \1/p'
+     6  }
+     7  switch($#*) {
+     8  case 0
+     9      cmds | tail -1
+    10  case *
+    11      cmds | grep -n '^   '^$&quot;* | tail -r |
+    12          sort -u +1 | sort -n |
+    13          sed 's/^[0-9]+: //'
+    14  }
+</code></pre>
+<p><code>. 9.rc</code> ejecuta ese archivo en el contexto actual (equivalente a <code>source</code> en bash). <code>PROMPT</code> es una expresión regular que describe el aspecto de un prompt típico: caracteres sin espacio, seguidos de <code>%</code>, <code>;</code>, <code>$</code> o <code>#</code>, seguidos de espacios. Captura prompts como <code>%</code>, <code>$</code>, <code>usuario$</code>, etc.</p>
+<p>La función <code>cmds</code> pasa el texto de la ventana por <code>sed</code>, que extrae todo lo que aparece después de un prompt — es decir, los comandos que el usuario ejecutó — siempre que no empiecen con <code>"</code>. Ese filtro <code>[^"]</code> evita que el script se liste a sí mismo en el historial.</p>
+<p>Sin argumentos, devuelve el último comando ejecutado (<code>tail -1</code>). Con argumentos, busca comandos que los contengan: <code>grep -n</code> numera las líneas para preservar el orden cronológico, <code>tail -r</code> invierte, <code>sort -u +1</code> deduplica por contenido ignorando el número de línea, <code>sort -n</code> restaura el orden, y <code>sed</code> limpia los prefijos numéricos.</p>
+<p>Notar <code>$"*</code>: convierte la lista de argumentos <code>$*</code> en un único string con espacios, para usarlo como patrón en <code>grep</code>. Es el mismo operador <code>$"var</code> del tutorial.</p>
+<hr />
+<h3 id="buscar_y_ejecutar"><code>""</code> buscar y ejecutar<a class="headerlink" href="#buscar_y_ejecutar" title="Permanent link">&para;</a></h3>
+<p>El nombre del script es <code>""</code>. Usa <code>"</code> para buscar y ejecuta el resultado:</p>
+<pre><code class="language-rc">     1  #!/usr/local/plan9/bin/rc
+     2  cmd = `{quote1 $* | tail -1}
+     3  if (~ $#cmd 0) {
+     4      echo no such command found &gt;[1=2]
+     5      exit notfound
+     6  }
+     7  echo '  ' $cmd &gt;[1=2]
+     8  rc -c $&quot;cmd
+</code></pre>
+<p><code>quote1</code> es un auxiliar que llama a <code>"</code> y formatea la salida con quoting correcto para rc, de modo que el resultado pueda pasarse a <code>rc -c</code> sin problemas. <code>| tail -1</code> toma el match más reciente.</p>
+<p>Tres detalles que vale notar:</p>
+<p><strong><code>&gt;[1=2]</code></strong> redirige stdout hacia stderr — útil para mensajes que no deben mezclarse con la salida del comando ejecutado.</p>
+<p><strong><code>exit notfound</code></strong>: en rc, <code>$status</code> puede ser un <strong>string arbitrario</strong>, no solo un número entero. <code>exit notfound</code>, <code>exit 'permiso denegado'</code>, <code>exit ok</code> son todos válidos. Esto es una particularidad de rc y Plan 9 que no existe en bash.</p>
+<p><strong><code>rc -c $"cmd</code></strong>: arranca un nuevo proceso rc con <code>-c</code>, que toma el comando a ejecutar directamente de un string. <code>$"cmd</code> convierte la lista <code>cmd</code> en ese string.</p>
+<hr />
+<h3 id="el_sistema_completo">El sistema completo<a class="headerlink" href="#el_sistema_completo" title="Permanent link">&para;</a></h3>
+<pre><code>wintext    →    &quot;    →    &quot;&quot;
+(obtener texto)  (buscar)  (buscar y ejecutar)
+</code></pre>
+<p>Los tres scripts juntos implementan un historial completo sin ninguna estructura de datos especial ni mecanismo interno del shell. El "historial" es simplemente el texto que ya está en pantalla, procesado con <code>sed</code>, <code>grep</code> y <code>sort</code>.</p>
+<p>Cualquiera puede reemplazar <code>wintext</code> por otra fuente de texto — un archivo de log, la salida de otro comando — y los otros dos scripts siguen funcionando sin cambios. Eso es composición.</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright © 2026 Hernán Rondelli. All rights reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2026-08-05 04:46:03.376982+00:00
+-->
