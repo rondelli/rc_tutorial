@@ -1,0 +1,833 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Tutorial - Tutorial de rc — El shell de Plan 9</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-6200de57.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-0ddb9d96.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-16e23344.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Tutorial de rc — El shell de Plan 9</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="tutorial-de-rc--el-shell-de-plan-9"><a class="header" href="#tutorial-de-rc--el-shell-de-plan-9">Tutorial de <code>rc</code> — El shell de Plan 9</a></h1>
+<p><em>Author:</em> Hernán Rondelli</p>
+<p>Copyright © 2026 Hernán Rondelli. All rights reserved.</p>
+<h2 id="qué-es-rc"><a class="header" href="#qué-es-rc">Qué es <code>rc</code>?</a></h2>
+<p><code>rc</code> es el shell del sistema operativo <em>Plan 9 from Bell Labs</em>—que diseñado por los mismos creadores de Unix. Es un shell más simple, consistente, y elegante que <code>sh</code>. <code>rc</code> elimina inconsistencias históricas acumuladas en los shells POSIX (e.g., <code>sh</code>, <code>ksh</code>, <code>bash</code>, <code>zsh</code>).</p>
+<p>En <code>rc</code> hay una sola regla principal de la que se deriva casi todo:</p>
+<blockquote class="blockquote-tag blockquote-tag-important">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>En <code>rc</code> <strong>todo</strong> es una lista: los comandos reciben listas y producen listas.</p>
+</blockquote>
+<hr>
+<h2 id="comandos-básicos"><a class="header" href="#comandos-básicos">Comandos básicos</a></h2>
+<p>Los comandos y programas clásicos de Unix funcionan igual que en cualquier otro shell:</p>
+<pre><code class="language-rc">% echo 'Aguante Boca'
+% ls -l /etc
+% cat /etc/fstab
+</code></pre>
+<hr>
+<h2 id="variables"><a class="header" href="#variables">Variables</a></h2>
+<p>El símbolo <code>$</code> se usa cuando se <em>lee</em> el valor, en la asignación no usa <code>$</code>:</p>
+<pre><code class="language-rc">% nombre = 'Diego Armando Maradona'  # se crea la variable, y se le asigna un valor
+% echo $nombre                       # → Diego Armando Maradona
+</code></pre>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p><code>rc</code> ignora todo lo que se escriba después de un símbolo <code>#</code> hasta el fin de esa línea.</p>
+</blockquote>
+<hr>
+<h2 id="listas"><a class="header" href="#listas">Listas</a></h2>
+<p>La lista es la estructura de datos principal en <code>rc</code>. Los elementos de la lista se escriben separados por un espacio:</p>
+<pre><code class="language-rc">% colores = (azul amarillo verde negro)
+% echo $colores
+azul amarillo verde negro
+% echo $colores(1)        # se empieza a contar desde el 1
+azul
+% echo $colores(1 2 1)
+azul amarillo azul
+% echo $#colores          # longitud de la lista
+4
+% arquero = 'Juan Carlos Olave'
+% echo $arquero
+Juan Carlos Olave
+% echo $#arquero          # longitud de la lista
+1
+</code></pre>
+<p>En el último ejemplo, podemos ver que en <code>rc</code> <strong>todo</strong> es una lista, i.e. la variable <code>arquero</code> es una lista que contiene un solo string.</p>
+<hr>
+<h2 id="el-operador--de-concatenación"><a class="header" href="#el-operador--de-concatenación">El operador <code>^</code> de concatenación</a></h2>
+<p>En <code>rc</code> la concatenación es explícita: se usa el operador <code>^</code>. Esto elimina toda una categoría de errores de <em>quoting</em> que existen en <code>sh</code>, donde la concatenación es implícita y depende del contexto.</p>
+<h3 id="concatenación-básica"><a class="header" href="#concatenación-básica">Concatenación básica</a></h3>
+<pre><code class="language-rc">% echo 'Aguante'^'Belgrano'
+AguanteBelgrano
+% echo 'Aguante'^' Belgrano'
+Aguante Belgrano
+% nombre = 'Juan Carlos Olave'
+% echo 'Sr. ' ^ $nombre
+Sr. Juan Carlos Olave
+
+# Dos variables
+% extension = 'txt'
+% nombre_del_archivo = 'notas'
+% echo $nombre_del_archivo^'.'^$extension
+notas.txt
+</code></pre>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p><strong>Por qué <code>^</code> es necesario?</strong></p>
+<p>Sin el operador <code>^</code>, dos tokens separados por espacios son argumentos distintos para el comando. El operador <code>^</code> indica explícitamente “esto es una sola cosa”:</p>
+<pre><code class="language-rc">% nombre_del_archivo = 'notas'
+% echo $nombre_del_archivo '.txt'
+notas .txt                           # → dos argumentos: 'notas' y '.txt'
+% echo $nombre_del_archivo ^ '.txt'
+notas.txt                            # → un argumento: 'notas.txt'
+% echo $nombre_del_archivo'.txt'
+notas.txt                            # → un argumento: 'notas.txt'
+</code></pre>
+</blockquote>
+<h3 id="concatenación-de-listas"><a class="header" href="#concatenación-de-listas">Concatenación de listas</a></h3>
+<p>Cuando uno de los operandos es una lista, y el otro es un elemento simple, <code>^</code> distribuye la concatenación sobre cada elemento de la lista:</p>
+<pre><code class="language-rc">% archivos = (main funciones data)
+% echo $archivos ^ '.c'
+main.c funciones.c data.c
+
+% echo 'test_' ^ $archivos ^ '.c'
+test_main.c test_funciones.c test_data.c
+</code></pre>
+<p>Esto es útil para generar nombres de archivos, flags, ó cualquier conjunto de strings que comparten un prefijo, ó sufijo.</p>
+<p>Cuando ambos operandos son listas de la misma longitud, la concatenación es <em>elemento a elemento</em>:</p>
+<pre><code class="language-rc">% prefijos = (src/ include/ test/)
+% sufijos = (main.c config.h run.c)
+% echo $prefijos ^ $sufijos
+src/main.c include/config.h test/run.c
+</code></pre>
+<p>Si las listas tienen distinta longitud, <code>rc</code> produce un error.</p>
+<hr>
+<h2 id="quoting"><a class="header" href="#quoting">Quoting</a></h2>
+<p>En <code>rc</code> las comillas simples se usan para literales, sin ninguna expansión.</p>
+<pre><code class="language-rc"># Comillas simples: literal, sin ninguna expansión
+% echo 'El valor es $nombre'    # → El valor es $nombre
+
+
+Las comillas dobles unen los elementos de una lista en un único string separado con espacios:
+% num1 = (uno dos tres)
+% num2 = $"num1         # $"var: une los elementos de la lista en un único string
+% echo $#num1
+3
+% echo $#num2
+1
+% echo $num1
+uno dos tres
+% echo $num2
+uno dos tres
+</code></pre>
+<p>No hay comillas dobles para expansión como en <code>bash</code>. La expansión siempre ocurre con <code>$</code>, sin importar el contexto.</p>
+<hr>
+<h2 id="globbing"><a class="header" href="#globbing">Globbing</a></h2>
+<p>El <em>globbing</em> es la expansión de nombres de archivo que realiza el shell antes de ejecutar un comando. Los patrones de glob son más simples que las expresiones regulares.</p>
+<blockquote class="blockquote-tag blockquote-tag-warning">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
+<p>Los patrones de glob, y las expresiones regulares, <strong>no</strong> son la misma cosa, aunque se parecen bastante—y en concepto, son la misma idea.</p>
+</blockquote>
+<h3 id="-cero-o-más-caracteres"><a class="header" href="#-cero-o-más-caracteres"><code>*</code> cero o más caracteres</a></h3>
+<p>Coincide con cualquier secuencia de caracteres, excepto <code>/</code> dado que es el separador de directorios:</p>
+<pre><code class="language-rc">ls *.c               # todos los archivos .c
+ls notas-*.txt       # archivos que empiezan con 'notas-' y que terminen con `.txt`
+ls src/*.h           # archivos .h dentro de src/
+</code></pre>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p><code>*</code> no es recursivo, i.e no entra en subdirectorios.</p>
+</blockquote>
+<h3 id="-exactamente-un-único-carácter"><a class="header" href="#-exactamente-un-único-carácter"><code>?</code> exactamente un único carácter</a></h3>
+<p>El operador <code>?</code> coincide con exactamente <strong>un</strong> carácter, excepto <code>/</code>.</p>
+<pre><code class="language-rc">ls archivo?.c        # archivo1.c, archivoa.c, archivo_.c,...
+ls ???.txt           # exactamente 3 caracteres antes de .txt
+</code></pre>
+<h3 id="-clase-de-caracteres"><a class="header" href="#-clase-de-caracteres"><code>[...]</code> clase de caracteres</a></h3>
+<p>Coincide con exactamente un carácter del conjunto:</p>
+<pre><code class="language-rc">ls archivo[123].c       # archivo1.c, archivo2.c o archivo3.c
+ls [Aa]rchivo.txt       # Archivo.txt, archivo.txt
+ls letra_[a-z].txt      # letra_a.txt, letra_b.txt, ..., letra_z.txt
+ls test_[0-9].sh        # test_0.sh, test_1.sh, ..., test_9.sh
+ls [a-zA-Z]*.c          # archivos .c que empiezan con una letra
+</code></pre>
+<p>Se pueden combinar rangos y caracteres sueltos dentro de <code>[...]</code>:</p>
+<pre><code class="language-rc">ls archivo[0-9a-f].txt  # un dígito o una letra hexadecimal
+</code></pre>
+<h3 id="a-z-clase-de-caracteres-negada"><a class="header" href="#a-z-clase-de-caracteres-negada"><code>[~a-z]</code> clase de caracteres negada</a></h3>
+<p>En <code>rc</code>, la negación dentro de <code>[...]</code> se indica con <code>~</code> (ojo, no es con <code>!</code> ni <code>^</code> como en otros shells):</p>
+<pre><code class="language-rc">ls archivo[~0-9].c      # archivoa.c, archivob.c... pero NO archivo1.c
+ls [~aeiou]*.txt        # .txt que NO empiezan con vocal
+ls [~.]*.c              # .c que no empiezan con punto
+ls [~a-zA-Z]*.sh        # .sh que no empiezan con una letra
+</code></pre>
+<h3 id="el-globbing-produce-listas"><a class="header" href="#el-globbing-produce-listas">El globbing produce listas</a></h3>
+<p>La expansión de un patrón produce una lista, consistente con el modelo central de rc:</p>
+<pre><code class="language-rc">source = (*.c)
+wc -l $source        # cantidad de líneas en cada archivo .c encontrado
+
+for(f in *.txt) {
+    echo 'Procesando el archivo: '^$f
+}
+</code></pre>
+<hr>
+<h2 id="pipes"><a class="header" href="#pipes">Pipes</a></h2>
+<p>Un <em>pipe</em> en Unix es un mecanismo de <em>Inter-Process Communication (IPC)</em>, y es uno de los conceptos más importantes, y poderosos para la composición de operaciones de distintos programas.</p>
+<p>Un <em>pipe</em> es un <em>canal unidireccional de comunicación entre procesos</em> que permite que la salida estándar de un programa se conecte directamente a la entrada estándar de otro programa, sin necesidad de archivos intermedios.</p>
+<pre><code class="language-rc">% ls | sort
+% cat compras_del_super.txt | grep detergente
+% ls | grep '.txt' | wc -l
+</code></pre>
+<hr>
+<h2 id="redireccionamiento"><a class="header" href="#redireccionamiento">Redireccionamiento</a></h2>
+<p>El redireccionamiento permite cambiar la salida ó la entrada de un programa:</p>
+<pre><code class="language-rc">% echo 'El Diego' &gt; jugadores.txt     # crea ó sobreescribe el archivo de salida 'jugadores.txt'
+% echo 'Messi' &gt;&gt; jugadores.txt       # crea ó le agrega al archivo de salida 'jugadores.txt'
+% cat &lt; entrada.txt
+</code></pre>
+<h3 id="file-descriptors"><a class="header" href="#file-descriptors">File descriptors</a></h3>
+<ul>
+<li><strong>0 - stdin</strong>: entrada estándar, el teclado.</li>
+<li><strong>1 - stdout</strong>: salida estándar, el display.</li>
+<li><strong>2 - stderr</strong>: salida de error, el display.</li>
+</ul>
+<h3 id="operadores"><a class="header" href="#operadores">Operadores</a></h3>
+<p>A continuación se muestra la sintaxis de los operadores.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: center">Operador</th><th>Acción</th><th>Ejemplo</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: center"><code>&gt;</code></td><td>Redirige stdout (sobreescribe)</td><td><code>ls &gt; archivos.txt</code></td></tr>
+<tr><td style="text-align: center"><code>&gt;[1]</code></td><td>Idem anterior</td><td><code>ls &gt;[1] archivos.txt</code></td></tr>
+<tr><td style="text-align: center"><code>&gt;&gt;</code></td><td>Redirige stdout (agrega al final)</td><td><code>echo 'hello' &gt;&gt; log.txt</code></td></tr>
+<tr><td style="text-align: center"><code>&gt;&gt;[1]</code></td><td>Idem anterior</td><td><code>echo 'hello' &gt;&gt;[1] log.txt</code></td></tr>
+<tr><td style="text-align: center"><code>&lt;</code></td><td>Redirige stdin</td><td><code>sort &lt; lista.txt</code></td></tr>
+<tr><td style="text-align: center"><code>&lt;[0]</code></td><td>Idem anterior</td><td><code>sort &lt;[0] lista.txt</code></td></tr>
+<tr><td style="text-align: center"><code>&gt;[2]</code></td><td>Redirige stderr</td><td><code>comando &gt;[2] errores.log</code></td></tr>
+<tr><td style="text-align: center"><code>&gt;[2=1]</code></td><td>Redirige stderr a la salida de stdout</td><td><code>comando &gt; salida.txt &gt;[2=1]</code></td></tr>
+<tr><td style="text-align: center"><code>&gt;[2=]</code></td><td>Redirige stderr a null</td><td><code>comando &gt;[2=]</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Ejemplo combinando pipes con redireccionamiento:</p>
+<pre><code class="language-rc">% cat archivo.log | grep error &gt;errores_encontrados.txt &gt;[2]/dev/null
+</code></pre>
+<hr>
+<h2 id="sustitución-de-comandos"><a class="header" href="#sustitución-de-comandos">Sustitución de comandos</a></h2>
+<p>En <code>sh</code> se usa <code>`comando`</code>, en <code>rc</code> se usa <code>`{comando}</code>:</p>
+<pre><code class="language-rc">% fecha = `{date +%F} # (suponiendo Unix date)
+% echo $fecha
+2011-06-26
+% archivos = `{ls /etc/}
+% echo $#archivos       # cantidad de archivos en /etc
+</code></pre>
+<p>El resultado es una lista, dividida por los caracteres en <code>$ifs</code> (by default: espacio, tab, y newline).</p>
+<hr>
+<h2 id="aritmética-con-hoc"><a class="header" href="#aritmética-con-hoc">Aritmética con <code>hoc</code></a></h2>
+<p><code>rc</code> no tiene operadores aritméticos incorporados. Para hacer cálculos numéricos, en <code>rc</code> hay que usar un programa externo llamando <code>hoc</code> <em>(High Order Calculator)</em>, que es la calculadora de Plan 9, introducida por Kernighan y Pike en <em>The Unix Programming Environment</em> (1984).</p>
+<h3 id="uso-interactivo-de-hoc"><a class="header" href="#uso-interactivo-de-hoc">Uso interactivo de hoc</a></h3>
+<p><code>hoc</code> es una calculadora simple de línea de comandos con soporte para floats:</p>
+<pre><code class="language-rc">% hoc
+3 * 5
+15
+27 / 3
+9
+28 / 3
+9.333333333333334
+sqrt(16)
+4
+2 ^ 10
+1024
+PI
+3.141592653589793
+E
+2.718281828459045
+</code></pre>
+<h3 id="guardar-el-resultado-en-variables"><a class="header" href="#guardar-el-resultado-en-variables">Guardar el resultado en variables</a></h3>
+<p>Se puede combinar <code>hoc</code> con sustitución de comandos para guardar el resultado en una variable en <code>rc</code>:</p>
+<pre><code class="language-rc">% x = `{hoc -e '3 * 5'}
+% echo $x
+15
+% raíz = `{hoc -e 'sqrt(4)'}
+% echo $raíz
+2
+</code></pre>
+<h3 id="usar-variables-de-rc-en-expresiones-en-hoc"><a class="header" href="#usar-variables-de-rc-en-expresiones-en-hoc">Usar variables de <code>rc</code> en expresiones en <code>hoc</code></a></h3>
+<p>Se construye la expresión como string usando <code>^</code>, y se la pasa a hoc:</p>
+<pre><code class="language-rc">% radio = 5
+% area = `{hoc -e $radio ^ '^2 * PI'}
+% echo $area
+78.53981633974483
+</code></pre>
+<p>Esta línea tiene un detalle importante: aparecen dos <code>^</code> con <strong>significados distintos</strong>.</p>
+<ul>
+<li>El primer <code>^</code> es el <em>operador de concatenación</em> en <code>rc</code>, y concatena <code>$radio</code> (que vale <code>5</code>) con el string <code>'^2 * PI'</code>, produciendo la expresión <code>5^2 * PI</code>.</li>
+<li>Dentro de esa expresión, el <code>^</code> que queda es el <em>operador de exponenciación</em> en hoc.</li>
+</ul>
+<p>El string <code>5^2 * PI</code> se pasa a <code>hoc</code>, que lo evalúa como 25 × π.</p>
+<p>Otro ejemplo con dos variables:</p>
+<pre><code class="language-rc">% a = 28
+% b = 3
+% cociente = `{hoc -e $a ^ '/' ^ $b}
+% echo $cociente
+9.333333333333334
+</code></pre>
+<h3 id="operaciones-en-hoc"><a class="header" href="#operaciones-en-hoc">Operaciones en <code>hoc</code></a></h3>
+<p>A continuación se muestra la sintaxis de los operadores.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Operación</th><th>Sintaxis</th><th>Uso</th></tr>
+</thead>
+<tbody>
+<tr><td>suma</td><td><code>a + b</code></td><td><code>2 + 3</code> → <code>5</code></td></tr>
+<tr><td>resta</td><td><code>a - b</code></td><td><code>10 - 4</code> → <code>6</code></td></tr>
+<tr><td>multiplicación</td><td><code>a * b</code></td><td><code>6 * 7</code> → <code>42</code></td></tr>
+<tr><td>división</td><td><code>a / b</code></td><td><code>22 / 7</code> → <code>3.1428...</code></td></tr>
+<tr><td>módulo</td><td><code>a % b</code></td><td><code>17 % 5</code> → <code>2</code></td></tr>
+<tr><td>exponenciación</td><td><code>a ^ b</code></td><td><code>2^10</code> → <code>1024</code></td></tr>
+<tr><td>raíz cuadrada</td><td><code>sqrt(x)</code></td><td><code>sqrt(2)</code> → <code>1.4142...</code></td></tr>
+<tr><td>valor absoluto</td><td><code>abs(x)</code></td><td><code>abs(-5)</code> → <code>5</code></td></tr>
+<tr><td>parte entera</td><td><code>int(x)</code></td><td><code>int(3.9)</code> → <code>3</code></td></tr>
+<tr><td>logaritmo</td><td><code>log(x)</code></td><td><code>log(E)</code> → <code>1</code></td></tr>
+<tr><td>exponencial</td><td><code>exp(x)</code></td><td><code>exp(1)</code> → <code>2.7182...</code></td></tr>
+<tr><td>seno</td><td><code>sin(x)</code></td><td>(en radianes)</td></tr>
+<tr><td>coseno</td><td><code>cos(x)</code></td><td>(en radianes)</td></tr>
+<tr><td>tangente</td><td><code>tan(x)</code></td><td>(en radianes)</td></tr>
+<tr><td>arcotangente</td><td><code>atan(x)</code></td><td>(en radianes)</td></tr>
+<tr><td>número π</td><td><code>PI</code></td><td>3.141592653589793</td></tr>
+<tr><td>número <em>e</em></td><td><code>E</code></td><td>2.718281828459045</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="control-de-flujo"><a class="header" href="#control-de-flujo">Control de flujo</a></h2>
+<h3 id="if"><a class="header" href="#if">if</a></h3>
+<p>La condición es un comando. Si devuelve código de error <code>0</code>, i.e comando exitoso, se ejecuta el bloque.</p>
+<pre><code class="language-rc">if(test -f /etc/passwd) {
+    echo 'El archivo existe.'
+}
+
+if(test -f /etc/passwd) {
+    echo 'El archivo existe.'
+} if not {
+    echo 'El archivo **no** existe.'
+}
+</code></pre>
+<h3 id="while"><a class="header" href="#while">while</a></h3>
+<pre><code class="language-rc">i = 1
+while(test $i -le 10) {
+    echo $i
+    i = `{hoc -e $i' + 1'}
+}
+</code></pre>
+<h3 id="for"><a class="header" href="#for">for</a></h3>
+<pre><code class="language-rc">for(c in azul amarillo azul) {
+    echo $c
+}
+
+# Con una variable lista:
+colores = (azul amarillo azul)
+for(c in $colores) {
+    echo $c
+}
+
+# Sobre archivos:
+for(f in `{ls *.txt}) {
+    echo 'Procesando el archivo: '^$f
+}
+
+# un "for range" de 1 a 10
+for(i in `{seq 10}) {
+	echo $i
+}
+</code></pre>
+<h3 id="switch"><a class="header" href="#switch">switch</a></h3>
+<pre><code class="language-rc">input = 'hola'
+switch($input) {
+case hola
+    echo 'Dijiste hola'
+case chau
+    echo 'Dijiste chau'
+case *
+    echo 'No sé qué dijiste'
+}
+</code></pre>
+<hr>
+<h2 id="el-operador--match"><a class="header" href="#el-operador--match">El operador <code>~</code> match</a></h2>
+<p><code>rc</code> incluye el operador <code>~</code> para comparar strings contra patrones de globbing:</p>
+<pre><code class="language-rc"># Comparación exacta
+if(~ $nombre Juan) {
+    echo 'El nombre es Juan.'
+}
+
+# Con patrón de globbing
+if(~ $archivo *.txt) {
+    echo 'El archivo es un archivo de texto.'
+}
+
+# Múltiples patrones (cualquiera puede coincidir)
+if(~ $jugador Cavenaghi Ortega Gallardo 'Ramón Díaz') {
+	echo 'Es un jugador de la B.'
+}
+</code></pre>
+<hr>
+<h2 id="funciones"><a class="header" href="#funciones">Funciones</a></h2>
+<p>Las funciones se definen con <code>fn</code> y el nombre de la función, y los parámetros de la función se especifican por posición, en este caso, la función recibe un único parámetro <code>$1</code>:</p>
+<pre><code class="language-rc">     1	fn say_hello {
+     2		echo 'Hello, ' ^ $1
+     3	}
+</code></pre>
+<p>Los argumentos a la función se pasan posicionalmente, en este caso, el primer argumento es <code>$1</code>:</p>
+<pre><code class="language-rc">% say_hello 'Diego Armando Maradona'
+Hello, Diego Armando Maradona
+</code></pre>
+<p>La lista de todos los argumentos se especifican con la variable <code>$*</code>. Además, se pueden especificar por posición, donde el primer argumento es <code>$1</code>, el segundo argumento es <code>$2</code>, etc:</p>
+<pre><code class="language-rc">     1	fn mostrar_argumentos {
+     2	    echo 'La cantidad de argumentos de la función es ' ^ $#* ^ '.'
+     3		echo 'Los argumentos son:'
+     4		for(arg in $*) {
+     5			echo '-' $arg
+     6		}
+     7	}
+     8
+     9	mostrar_argumentos azul amarillo azul
+</code></pre>
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>Si bien se pueden definir las funciones interactivamente, es más habitual y conveniente, escribir las funciones en un archivo y luego ejecutar ese archivo. Es el tema que se trata a continuación.</p>
+</blockquote>
+<hr>
+<h2 id="scripts"><a class="header" href="#scripts">Scripts</a></h2>
+<p>La primera línea de un script <code>rc</code> es el <em>shebang</em>:</p>
+<pre><code class="language-rc">#!/bin/rc
+</code></pre>
+<p>Ejemplo completo:</p>
+<pre><code class="language-rc">     1	#!/bin/rc
+     2
+     3	# Verifica que se pasó un argumento
+     4	if(~ $#* 0) {
+     5	    echo 'Uso: '$0' &lt;directorio&gt;'
+     6	    exit 1
+     7	}
+     8
+     9	dir = $1
+    10
+    11	if(! test -d $dir) {
+    12	    echo $dir 'no es un directorio'
+    13	    exit 1
+    14	}
+    15
+    16	echo 'Archivos en '$dir':'
+    17	for(f in `{ls $dir}) {
+    18	    echo '  ' $f
+    19	}
+</code></pre>
+<hr>
+<h2 id="argumentos-en-scripts"><a class="header" href="#argumentos-en-scripts">Argumentos en scripts</a></h2>
+<p>Cuando se invoca un script así:</p>
+<pre><code>./script arg1 arg2 arg3
+</code></pre>
+<p>los argumentos quedan disponibles dentro del script a través de varias variables especiales.</p>
+<h3 id="-la-lista-completa-de-argumentos"><a class="header" href="#-la-lista-completa-de-argumentos"><code>$*</code> la lista completa de argumentos</a></h3>
+<p>En <code>rc</code>, <code>$*</code> es una lista con todos los argumentos.</p>
+<pre><code class="language-rc">     1	#!/bin/rc
+     2
+     3	echo 'Argumentos recibidos:' $*
+     4	echo 'Cantidad de argumentos:' $#*
+</code></pre>
+<p>Invocado como <code>./script uno dos tres</code>:</p>
+<pre><code class="language-rc">Argumentos recibidos: uno dos tres
+Cantidad de argumentos: 3
+</code></pre>
+<h3 id="1-2-3--acceso-posicional"><a class="header" href="#1-2-3--acceso-posicional"><code>$1</code>, <code>$2</code>, <code>$3</code>, … acceso posicional</a></h3>
+<p>Son equivalentes a <code>$*(1)</code>, <code>$*(2)</code>, <code>$*(3)</code>: índices sobre la lista <code>$*</code>, con base 1.</p>
+<pre><code class="language-rc">     1	#!/bin/rc
+     2
+     3	echo 'Primero:' $1
+     4	echo 'Segundo:' $2
+     5	echo 'Tercero:' $3
+</code></pre>
+<p>Si se intenta acceder a un índice que no existe (por ejemplo <code>$3</code> cuando solo se pasaron dos argumentos), <code>rc</code> devuelve una lista vacía sin producir un error.</p>
+<h3 id="0-nombre-del-script"><a class="header" href="#0-nombre-del-script"><code>$0</code> nombre del script</a></h3>
+<p><code>$0</code> contiene el nombre con el que fue invocado el script. Es útil para mensajes de uso:</p>
+<pre><code class="language-rc">     1	#!/bin/rc
+     2
+     3	echo 'Este script se llama:' $0
+</code></pre>
+<pre><code>Este script se llama: ./script
+</code></pre>
+<h3 id="-cantidad-de-argumentos"><a class="header" href="#-cantidad-de-argumentos"><code>$#*</code> cantidad de argumentos</a></h3>
+<p>El operador <code>$#</code> seguido de un nombre de lista devuelve su longitud. Para los argumentos del script, la lista se llama <code>*</code>, así que la sintaxis es <code>$#*</code>:</p>
+<pre><code class="language-rc">echo $#*       # cantidad de argumentos
+</code></pre>
+<h3 id="validar-argumentos"><a class="header" href="#validar-argumentos">Validar argumentos</a></h3>
+<p>El patrón más común es verificar que se recibió la cantidad correcta de argumentos antes de hacer cualquier otra cosa:</p>
+<pre><code class="language-rc">     1	#!/bin/rc
+     2
+     3	# Verificar que se pasó exactamente un argumento
+     4	if(~ $#* 0) {
+     5	    echo 'Uso: '$0' &lt;nombre&gt;'
+     6	    exit 1
+     7	}
+     8
+     9	echo 'Hola,' $1
+</code></pre>
+<p>Para verificar un mínimo de argumentos:</p>
+<pre><code class="language-rc">if(test $#* -lt 2) {
+    echo 'Uso: '$0' &lt;origen&gt; &lt;destino&gt;'
+    exit 1
+}
+</code></pre>
+<h3 id="iterar-sobre-los-argumentos"><a class="header" href="#iterar-sobre-los-argumentos">Iterar sobre los argumentos</a></h3>
+<p>Como <code>$*</code> es una lista, el <code>for</code> funciona directamente:</p>
+<pre><code class="language-rc">#!/bin/rc
+
+for(arg in $*) {
+    echo 'procesando:' $arg
+}
+</code></pre>
+<p>Invocado como <code>./script boca belgrano olave</code>:</p>
+<pre><code class="language-rc">procesando: boca
+procesando: belgrano
+procesando: olave
+</code></pre>
+<hr>
+<h2 id="variables-especiales"><a class="header" href="#variables-especiales">Variables especiales</a></h2>
+<p>En la siguiente tabla, se muestran las variables especiales de <code>rc</code>.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Variable</th><th>Significado</th></tr>
+</thead>
+<tbody>
+<tr><td><code>$*</code></td><td>Todos los argumentos de la función, ó del script</td></tr>
+<tr><td><code>$#*</code></td><td>Cantidad de argumentos</td></tr>
+<tr><td><code>$1</code>, <code>$2</code>…</td><td>Argumentos posicionales</td></tr>
+<tr><td><code>$status</code></td><td>Código de salida del último comando (equivale a <code>$?</code>)</td></tr>
+<tr><td><code>$pid</code></td><td>PID del proceso <code>rc</code> actual</td></tr>
+<tr><td><code>$home</code></td><td>Home directory (en <code>sh</code> es <code>$HOME</code>)</td></tr>
+<tr><td><code>$path</code></td><td>Lista de directorios donde se encuentran los binarios</td></tr>
+<tr><td><code>$ifs</code></td><td>Separadores para sustitución de comandos</td></tr>
+</tbody>
+</table>
+</div>
+<p>Ejemplos:</p>
+<pre><code class="language-rc">% path = ($home/bin /usr/local/bin /usr/bin /bin)
+%
+% # Agregar un directorio al frente:
+% path = ($home/mis_scripts $path)
+</code></pre>
+<h2 id="herramientas-del-ecosistema-historial-sin-historial"><a class="header" href="#herramientas-del-ecosistema-historial-sin-historial">Herramientas del ecosistema: historial sin historial</a></h2>
+<p><code>rc</code> no guarda un historial de los comandos usados previamente como otros shells. En <code>rc</code>, no existe el comando <code>history</code>, ni <code>Ctrl-P</code>, ni <code>$home/.rc_history</code>. Esto es una decisión consciente de diseño. En Plan 9, el historial <em>es</em> simplemente el texto visible en la ventana de la terminal. <em>Lo que ya está en pantalla no necesita guardarse aparte.</em></p>
+<p>Lo que sigue es un conjunto de tres scripts que implementan búsqueda y re-ejecución de comandos componiendo herramientas pequeñas. Son un ejemplo concreto de la filosofía del ecosistema: en lugar de complicar el shell, se construye con lo que ya existe.</p>
+<hr>
+<h3 id="wintext-muestra-el-texto-de-la-ventana-actual"><a class="header" href="#wintext-muestra-el-texto-de-la-ventana-actual"><code>wintext</code> muestra el texto de la ventana actual</a></h3>
+<p><code>wintext</code> obtiene el contenido de la ventana activa. Soporta tres entornos: Acme, 9term y <code>tmux</code>.</p>
+<pre><code class="language-rc">     1	#!/usr/local/plan9/bin/rc
+     2
+     3	if(~ $winid [0-9]*) {
+     4		9p read acme/$winid/body
+     5		exit 0
+     6	}
+     7	if(~ $text9term 'unix!'*) {
+     8		dial -e $text9term &lt; /dev/null
+     9		exit 0
+    10	}
+    11	if(~ $TMUX ?*) {
+    12		tmux capture-pane -p
+    13		exit 0
+    14	}
+    15
+    16	echo 'no running window found' &gt;[2=1]
+    17	exit 1
+</code></pre>
+<p>En cada caso se usa una variable que el entorno correspondiente setea automáticamente:</p>
+<ul>
+<li>
+<p><strong><code>$winid</code></strong>: Acme lo define en cada ventana <code>win</code> con el ID numérico del buffer. <code>9p read acme/$winid/body</code> lee el contenido de ese buffer a través del servidor 9P. El patrón <code>[0-9]*</code> verifica que la variable esté definida y contenga un número.</p>
+</li>
+<li>
+<p><strong><code>$text9term</code></strong>: <code>9term</code> (la terminal de plan9port) lo define con la dirección ip de la terminal, siempre con el prefijo <code>unix!</code> (notación de Plan 9 para sockets Unix). <code>dial -e</code> conecta a esa dirección y lee su contenido.</p>
+</li>
+<li>
+<p><strong><code>$TMUX</code></strong>: <code>tmux</code> lo define cuando se está dentro de una sesión. El patrón <code>?*</code> verifica que no esté vacía. <code>tmux capture-pane -p</code> imprime el contenido visible del pane actual.</p>
+</li>
+</ul>
+<p>El fallback usa <code>&gt;[2=1]</code>, redirige stderr a stdout.</p>
+<hr>
+<h3 id="-buscar-en-el-historial"><a class="header" href="#-buscar-en-el-historial"><code>"</code> buscar en el historial</a></h3>
+<p>El nombre del script es literalmente el carácter <code>"</code>. En <code>rc</code>, casi cualquier string puede ser el nombre de un script.</p>
+<pre><code class="language-rc">     1	#!/usr/local/plan9/bin/rc
+     2
+     3	. 9.rc
+     4
+     5	PROMPT='[^ 	]*[%;$#][ 	]+'
+     6
+     7	fn cmds {
+     8		wintext | sed -n 's/^'$PROMPT'([^"])/	\1/p'
+     9	}
+    10
+    11	switch($#*) {
+    12	case 0
+    13		cmds | tail -1
+    14	case *
+    15		cmds | grep -n '^	'^$"* | tail -r |
+    16			sort -u +1 | sort -n |
+    17			sed 's/^[0-9]+: //'
+    18	}
+</code></pre>
+<p><code>. 9.rc</code> ejecuta ese archivo en el contexto actual. <code>PROMPT</code> es una expresión regular que describe el aspecto de un prompt típico: caracteres sin espacio, seguidos de <code>%</code>, <code>;</code>, <code>$</code> o <code>#</code>, seguidos de espacios. Captura prompts como <code>%</code>, <code>$</code>, <code>user$</code>, etc.</p>
+<p>La función <code>cmds</code> pasa el texto de la ventana por <code>sed</code>, que extrae todo lo que aparece después de un prompt—es decir, los comandos que le usuarie ejecutó—siempre que no empiecen con <code>"</code>. Ese filtro <code>[^"]</code> evita que el script se liste a sí mismo en el historial.</p>
+<p>Sin argumentos, devuelve el último comando ejecutado (<code>tail -1</code>). Con argumentos, busca comandos que los contengan: <code>grep -n</code> numera las líneas para preservar el orden cronológico, <code>tail -r</code> invierte, <code>sort -u +1</code> deduplica por contenido ignorando el número de línea, <code>sort -n</code> restaura el orden, y <code>sed</code> limpia los prefijos numéricos.</p>
+<p>Notar <code>$"*</code>: convierte la lista de argumentos <code>$*</code> en un único string con espacios, para usarlo como patrón en <code>grep</code>. Es el mismo operador <code>$"var</code> del tutorial.</p>
+<hr>
+<h3 id="-buscar-y-ejecutar"><a class="header" href="#-buscar-y-ejecutar"><code>""</code> buscar y ejecutar</a></h3>
+<p>El nombre del script es <code>""</code>. Usa <code>"</code> para buscar y ejecuta el resultado:</p>
+<pre><code class="language-rc">     1	#!/usr/local/plan9/bin/rc
+     2
+     3	cmd = `{quote1 $* | tail -1}
+     4	if (~ $#cmd 0) {
+     5		echo no such command found &gt;[1=2]
+     6		exit notfound
+     7	}
+     8
+     9	echo '	' $cmd &gt;[1=2]
+    10	rc -c $"cmd
+</code></pre>
+<p><code>quote1</code> es un auxiliar que llama a <code>"</code> y formatea la salida con quoting correcto para rc, de modo que el resultado pueda pasarse a <code>rc -c</code> sin problemas. <code>| tail -1</code> toma el match más reciente.</p>
+<p>Tres detalles que vale notar:</p>
+<p><strong><code>&gt;[1=2]</code></strong> redirige stdout hacia stderr, que es útil para mensajes que no deben mezclarse con la salida del comando ejecutado.</p>
+<p><strong><code>exit notfound</code></strong>: en <code>rc</code>, <code>$status</code> puede ser un string arbitrario, <code>exit notfound</code>, <code>exit 'permiso denegado'</code>, <code>exit ok</code> son todos válidos. Esto es una particularidad de <code>rc</code> y Plan 9 que no existe en <code>bash</code>.</p>
+<p><strong><code>rc -c $"cmd</code></strong>: arranca un nuevo proceso <code>rc</code> con <code>-c</code>, que toma el comando a ejecutar directamente de un string. <code>$"cmd</code> convierte la lista <code>cmd</code> en ese string.</p>
+<hr>
+<h3 id="el-sistema-completo"><a class="header" href="#el-sistema-completo">El sistema completo</a></h3>
+<p>El algoritmo sería:</p>
+<ol>
+<li><code>wintext</code> para obtener el texto de los comandos usados.</li>
+<li><code>" comando</code> para buscar en el historial el <code>comando</code>.</li>
+<li><code>"" comando</code> para ejecutar el último uso del <code>comando</code>.</li>
+</ol>
+<p>Los tres scripts juntos implementan un historial completo sin ninguna estructura de datos especial ni mecanismo interno del shell. El “historial” es simplemente el texto que ya está en pantalla, procesado con <code>sed</code>, <code>grep</code> y <code>sort</code>.</p>
+<p>Cualquiera puede reemplazar <code>wintext</code> por otra fuente de texto—un archivo de log, la salida de otro comando, etc—y los otros dos scripts siguen funcionando sin cambios.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next prefetch" href="comparativa.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next prefetch" href="comparativa.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

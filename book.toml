@@ -1,0 +1,8 @@
+[book]
+title = "Tutorial de rc — El shell de Plan 9"
+authors = ["Hernán Rondelli"]
+language = "en"
+
+[output.html.fold]
+enable = true
+level = 0
