@@ -1,12 +1,11 @@
 # Tutorial de `rc` — El shell de Plan 9
-
-*Author:* Hernán Rondelli
-
 Copyright © 2026 Hernán Rondelli. All rights reserved.
+
+---
 
 ## Qué es `rc`?
 
-`rc` es el shell del sistema operativo *Plan 9 from Bell Labs*---que diseñado por los mismos creadores de Unix. Es un shell más simple, consistente, y elegante que `sh`. `rc` elimina inconsistencias históricas acumuladas en los shells POSIX (e.g., `sh`, `ksh`, `bash`, `zsh`).
+`rc` es el shell del sistema operativo *Plan 9 from Bell Labs*---que diseñado por los mismos creadores de Unix. Es un shell más simple, consistente, y elegante que `sh`. El shell `rc` elimina inconsistencias históricas acumuladas en los shells POSIX (e.g., `sh`, `ksh`, `bash`, `zsh`).
 
 En `rc` hay una sola regla principal de la que se deriva casi todo:
 
