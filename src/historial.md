@@ -8,7 +8,7 @@ Lo que sigue es un conjunto de tres scripts que implementan búsqueda, y re-ejec
 
 ---
 
-## `wintext` muestra el texto de la ventana actual
+## `wintext`: el texto de la ventana actual
 
 `wintext` obtiene el contenido de la ventana activa. Soporta tres entornos: Acme, 9term y `tmux`.
 
