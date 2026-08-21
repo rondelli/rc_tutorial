@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-89a42769.js";
+            window.path_to_searchindex_js = "searchindex-ef91ca3e.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-16e23344.js"></script>
@@ -687,98 +687,6 @@ procesando: olave
 % # Agregar un directorio al frente:
 % path = ($home/mis_scripts $path)
 </code></pre>
-<h2 id="herramientas-del-ecosistema-historial-sin-historial"><a class="header" href="#herramientas-del-ecosistema-historial-sin-historial">Herramientas del ecosistema: historial sin historial</a></h2>
-<p><code>rc</code> no guarda un historial de los comandos usados previamente como otros shells. En <code>rc</code>, no existe el comando <code>history</code>, ni <code>Ctrl-P</code>, ni <code>$home/.rc_history</code>. Esto es una decisión consciente de diseño. En Plan 9, el historial <em>es</em> simplemente el texto visible en la ventana de la terminal. <em>Lo que ya está en pantalla no necesita guardarse aparte.</em></p>
-<p>Lo que sigue es un conjunto de tres scripts que implementan búsqueda y re-ejecución de comandos componiendo herramientas pequeñas. Son un ejemplo concreto de la filosofía del ecosistema: en lugar de complicar el shell, se construye con lo que ya existe.</p>
-<hr>
-<h3 id="wintext-muestra-el-texto-de-la-ventana-actual"><a class="header" href="#wintext-muestra-el-texto-de-la-ventana-actual"><code>wintext</code> muestra el texto de la ventana actual</a></h3>
-<p><code>wintext</code> obtiene el contenido de la ventana activa. Soporta tres entornos: Acme, 9term y <code>tmux</code>.</p>
-<pre><code class="language-rc">     1	#!/usr/local/plan9/bin/rc
-     2
-     3	if(~ $winid [0-9]*) {
-     4		9p read acme/$winid/body
-     5		exit 0
-     6	}
-     7	if(~ $text9term 'unix!'*) {
-     8		dial -e $text9term &lt; /dev/null
-     9		exit 0
-    10	}
-    11	if(~ $TMUX ?*) {
-    12		tmux capture-pane -p
-    13		exit 0
-    14	}
-    15
-    16	echo 'no running window found' &gt;[2=1]
-    17	exit 1
-</code></pre>
-<p>En cada caso se usa una variable que el entorno correspondiente setea automáticamente:</p>
-<ul>
-<li>
-<p><strong><code>$winid</code></strong>: Acme lo define en cada ventana <code>win</code> con el ID numérico del buffer. <code>9p read acme/$winid/body</code> lee el contenido de ese buffer a través del servidor 9P. El patrón <code>[0-9]*</code> verifica que la variable esté definida y contenga un número.</p>
-</li>
-<li>
-<p><strong><code>$text9term</code></strong>: <code>9term</code> (la terminal de plan9port) lo define con la dirección ip de la terminal, siempre con el prefijo <code>unix!</code> (notación de Plan 9 para sockets Unix). <code>dial -e</code> conecta a esa dirección y lee su contenido.</p>
-</li>
-<li>
-<p><strong><code>$TMUX</code></strong>: <code>tmux</code> lo define cuando se está dentro de una sesión. El patrón <code>?*</code> verifica que no esté vacía. <code>tmux capture-pane -p</code> imprime el contenido visible del pane actual.</p>
-</li>
-</ul>
-<p>El fallback usa <code>&gt;[2=1]</code>, redirige stderr a stdout.</p>
-<hr>
-<h3 id="-buscar-en-el-historial"><a class="header" href="#-buscar-en-el-historial"><code>"</code> buscar en el historial</a></h3>
-<p>El nombre del script es literalmente el carácter <code>"</code>. En <code>rc</code>, casi cualquier string puede ser el nombre de un script.</p>
-<pre><code class="language-rc">     1	#!/usr/local/plan9/bin/rc
-     2
-     3	. 9.rc
-     4
-     5	PROMPT='[^ 	]*[%;$#][ 	]+'
-     6
-     7	fn cmds {
-     8		wintext | sed -n 's/^'$PROMPT'([^"])/	\1/p'
-     9	}
-    10
-    11	switch($#*) {
-    12	case 0
-    13		cmds | tail -1
-    14	case *
-    15		cmds | grep -n '^	'^$"* | tail -r |
-    16			sort -u +1 | sort -n |
-    17			sed 's/^[0-9]+: //'
-    18	}
-</code></pre>
-<p><code>. 9.rc</code> ejecuta ese archivo en el contexto actual. <code>PROMPT</code> es una expresión regular que describe el aspecto de un prompt típico: caracteres sin espacio, seguidos de <code>%</code>, <code>;</code>, <code>$</code> o <code>#</code>, seguidos de espacios. Captura prompts como <code>%</code>, <code>$</code>, <code>user$</code>, etc.</p>
-<p>La función <code>cmds</code> pasa el texto de la ventana por <code>sed</code>, que extrae todo lo que aparece después de un prompt—es decir, los comandos que le usuarie ejecutó—siempre que no empiecen con <code>"</code>. Ese filtro <code>[^"]</code> evita que el script se liste a sí mismo en el historial.</p>
-<p>Sin argumentos, devuelve el último comando ejecutado (<code>tail -1</code>). Con argumentos, busca comandos que los contengan: <code>grep -n</code> numera las líneas para preservar el orden cronológico, <code>tail -r</code> invierte, <code>sort -u +1</code> deduplica por contenido ignorando el número de línea, <code>sort -n</code> restaura el orden, y <code>sed</code> limpia los prefijos numéricos.</p>
-<p>Notar <code>$"*</code>: convierte la lista de argumentos <code>$*</code> en un único string con espacios, para usarlo como patrón en <code>grep</code>. Es el mismo operador <code>$"var</code> del tutorial.</p>
-<hr>
-<h3 id="-buscar-y-ejecutar"><a class="header" href="#-buscar-y-ejecutar"><code>""</code> buscar y ejecutar</a></h3>
-<p>El nombre del script es <code>""</code>. Usa <code>"</code> para buscar y ejecuta el resultado:</p>
-<pre><code class="language-rc">     1	#!/usr/local/plan9/bin/rc
-     2
-     3	cmd = `{quote1 $* | tail -1}
-     4	if (~ $#cmd 0) {
-     5		echo no such command found &gt;[1=2]
-     6		exit notfound
-     7	}
-     8
-     9	echo '	' $cmd &gt;[1=2]
-    10	rc -c $"cmd
-</code></pre>
-<p><code>quote1</code> es un auxiliar que llama a <code>"</code> y formatea la salida con quoting correcto para rc, de modo que el resultado pueda pasarse a <code>rc -c</code> sin problemas. <code>| tail -1</code> toma el match más reciente.</p>
-<p>Tres detalles que vale notar:</p>
-<p><strong><code>&gt;[1=2]</code></strong> redirige stdout hacia stderr, que es útil para mensajes que no deben mezclarse con la salida del comando ejecutado.</p>
-<p><strong><code>exit notfound</code></strong>: en <code>rc</code>, <code>$status</code> puede ser un string arbitrario, <code>exit notfound</code>, <code>exit 'permiso denegado'</code>, <code>exit ok</code> son todos válidos. Esto es una particularidad de <code>rc</code> y Plan 9 que no existe en <code>bash</code>.</p>
-<p><strong><code>rc -c $"cmd</code></strong>: arranca un nuevo proceso <code>rc</code> con <code>-c</code>, que toma el comando a ejecutar directamente de un string. <code>$"cmd</code> convierte la lista <code>cmd</code> en ese string.</p>
-<hr>
-<h3 id="el-sistema-completo"><a class="header" href="#el-sistema-completo">El sistema completo</a></h3>
-<p>El algoritmo sería:</p>
-<ol>
-<li><code>wintext</code> para obtener el texto de los comandos usados.</li>
-<li><code>" comando</code> para buscar en el historial el <code>comando</code>.</li>
-<li><code>"" comando</code> para ejecutar el último uso del <code>comando</code>.</li>
-</ol>
-<p>Los tres scripts juntos implementan un historial completo sin ninguna estructura de datos especial ni mecanismo interno del shell. El “historial” es simplemente el texto que ya está en pantalla, procesado con <code>sed</code>, <code>grep</code> y <code>sort</code>.</p>
-<p>Cualquiera puede reemplazar <code>wintext</code> por otra fuente de texto—un archivo de log, la salida de otro comando, etc—y los otros dos scripts siguen funcionando sin cambios.</p>
 
                     </main>
 

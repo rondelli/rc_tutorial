@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-89a42769.js";
+            window.path_to_searchindex_js = "searchindex-ef91ca3e.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-16e23344.js"></script>
@@ -179,7 +179,7 @@
 <p><code>rc</code> no guarda un historial de los comandos usados previamente como otros shells. En <code>rc</code>, no existe el comando <code>history</code>, ni <code>Ctrl-P</code>, ni <code>$home/.rc_history</code>. Esto es una decisión consciente de diseño. En Plan 9, el historial <em>es</em> simplemente el texto visible en la ventana de la terminal. <em>Lo que ya está en pantalla no necesita guardarse aparte.</em></p>
 <p>Lo que sigue es un conjunto de tres scripts que implementan búsqueda, y re-ejecución de comandos componiendo herramientas pequeñas. Son un ejemplo concreto de la filosofía Unix: en lugar de complicar el shell, se construye con lo que ya existe.</p>
 <hr>
-<h2 id="wintext-muestra-el-texto-de-la-ventana-actual"><a class="header" href="#wintext-muestra-el-texto-de-la-ventana-actual"><code>wintext</code> muestra el texto de la ventana actual</a></h2>
+<h2 id="wintext-el-texto-de-la-ventana-actual"><a class="header" href="#wintext-el-texto-de-la-ventana-actual"><code>wintext</code>: el texto de la ventana actual</a></h2>
 <p><code>wintext</code> obtiene el contenido de la ventana activa. Soporta tres entornos: Acme, 9term y <code>tmux</code>.</p>
 <pre><code class="language-rc">     1	#!/usr/local/plan9/bin/rc
      2
