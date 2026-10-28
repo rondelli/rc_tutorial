@@ -405,7 +405,8 @@ if(test -f /etc/passwd) {
 
 if(test -f /etc/passwd) {
     echo 'El archivo existe.'
-} if not {
+}
+if not {
     echo 'El archivo **no** existe.'
 }
 ```
